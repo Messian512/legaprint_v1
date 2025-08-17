@@ -1,27 +1,11 @@
 //step 1: get DOM
-let nextDom = document.getElementById('next');
-let prevDom = document.getElementById('prev');
 
 let carouselDom = document.querySelector('.carousel');
 let SliderDom = carouselDom.querySelector('.carousel .list');
 
-let timeRunning = 3000;
 let timeAutoNext = 7000;
 let animationDurationMs = 800; // sync with CSS keyframe durations
 
-// Swap button functions
-if (nextDom) {
-    nextDom.onclick = function(){
-        showSlider('prev');    
-    }
-}
-
-if (prevDom) {
-    prevDom.onclick = function(){
-        showSlider('next');    
-    }
-}
-let runTimeOut;
 let runNextAuto = setTimeout(() => {
     showSlider('next');
 }, timeAutoNext)
@@ -67,12 +51,24 @@ function showSlider(type){
     const swipeThreshold = 40; // px
 
     function onPointerDown(e){
+        if (e.button !== undefined && e.button !== 0) return; // only left button
         isPointerDown = true;
         startX = e.clientX;
+        carouselDom.classList.add('dragging');
+        if (e.cancelable) e.preventDefault();
         if (e.pointerId && carouselDom.setPointerCapture) {
             try { carouselDom.setPointerCapture(e.pointerId); } catch (err) {}
         }
         clearTimeout(runNextAuto);
+    }
+
+    function onPointerMove(e){
+        if (!isPointerDown) return;
+        // If mouse and no button pressed anymore, cancel
+        if (e.pointerType === 'mouse' && e.buttons !== 1) {
+            return onPointerCancel(e);
+        }
+        if (e.cancelable) e.preventDefault();
     }
 
     function onPointerUp(e){
@@ -90,6 +86,7 @@ function showSlider(type){
         }
         isPointerDown = false;
         startX = null;
+        carouselDom.classList.remove('dragging');
         if (e.pointerId && carouselDom.releasePointerCapture) {
             try { carouselDom.releasePointerCapture(e.pointerId); } catch (err) {}
         }
@@ -98,13 +95,15 @@ function showSlider(type){
     function onPointerCancel(e){
         isPointerDown = false;
         startX = null;
+        carouselDom.classList.remove('dragging');
         if (e.pointerId && carouselDom.releasePointerCapture) {
             try { carouselDom.releasePointerCapture(e.pointerId); } catch (err) {}
         }
     }
 
-    carouselDom.addEventListener('pointerdown', onPointerDown, { passive: true });
-    carouselDom.addEventListener('pointerup', onPointerUp, { passive: true });
+    carouselDom.addEventListener('pointerdown', onPointerDown, { passive: false });
+    carouselDom.addEventListener('pointermove', onPointerMove, { passive: false });
+    carouselDom.addEventListener('pointerup', onPointerUp, { passive: false });
     carouselDom.addEventListener('pointercancel', onPointerCancel, { passive: true });
     carouselDom.addEventListener('pointerleave', onPointerCancel, { passive: true });
 })();

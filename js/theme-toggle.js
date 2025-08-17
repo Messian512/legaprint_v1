@@ -54,11 +54,42 @@
             const willOpen = !primaryNav.classList.contains('is-open');
             setNavOpen(willOpen);
         });
-        if (navBackdrop){
-            navBackdrop.addEventListener('click', () => setNavOpen(false));
-        }
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') setNavOpen(false);
+        // Close sidebar when clicking any nav link (except theme switcher)
+        primaryNav.addEventListener('click', (e) => {
+            if (!primaryNav.classList.contains('is-open')) return;
+            const link = e.target && e.target.closest ? e.target.closest('a.menu-link') : null;
+            if (!link) return;
+            if (link.closest('.theme-switcher')) return;
+            setNavOpen(false);
         });
+        // Removed outside click and Esc key closing; keep only swipe and toggle button
+
+        // Swipe-to-close for the sidebar on mobile
+        let startX = null;
+        let isPointerDown = false;
+        const swipeCloseThreshold = 40; // px
+        primaryNav.addEventListener('pointerdown', (e) => {
+            if (!primaryNav.classList.contains('is-open')) return;
+            isPointerDown = true;
+            startX = e.clientX;
+            if (e.pointerId && primaryNav.setPointerCapture) {
+                try { primaryNav.setPointerCapture(e.pointerId); } catch (err) {}
+            }
+        }, { passive: true });
+        function endSwipe(e){
+            if (!isPointerDown) return;
+            const dx = e.clientX - startX;
+            if (dx > swipeCloseThreshold) {
+                setNavOpen(false);
+            }
+            isPointerDown = false;
+            startX = null;
+            if (e.pointerId && primaryNav.releasePointerCapture) {
+                try { primaryNav.releasePointerCapture(e.pointerId); } catch (err) {}
+            }
+        }
+        primaryNav.addEventListener('pointerup', endSwipe, { passive: true });
+        primaryNav.addEventListener('pointercancel', endSwipe, { passive: true });
+        primaryNav.addEventListener('pointerleave', endSwipe, { passive: true });
     }
 })();
