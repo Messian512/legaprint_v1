@@ -49,6 +49,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+html, body { overflow-x: hidden; }
+.carousel { touch-action: pan-y; }
+body.nav-open { overflow: hidden; touch-action: none; }
 
 .container {
     width: 90%;
@@ -57,9 +60,11 @@ body {
 }
 
 .site-header {
-    position: sticky;
+    position: fixed;
     top: 0;
-    z-index: 1000;
+    left: 0;
+    right: 0;
+    z-index: 1300;
     background: var(--color-bg-tint);
     padding: 0.5rem 0 0.5rem 0;
     border-bottom: 1px solid var(--color-secondary);
@@ -82,15 +87,39 @@ body {
     font-weight: 500;
     transition: color 0.2s;
 }
-.site-header nav a:hover {
+/* .site-header nav a:hover {
+    font-weight: 500;
     color: var(--color-primary);
-}
+} */
 
 .header-flex {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 2rem;
+}
+.header-right { display: flex; align-items: center; gap: 1rem; }
+.nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+}
+.nav-toggle:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+.nav-toggle .nav-toggle-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: var(--color-text);
+    margin: 0;
 }
 .logo-link {
     display: flex;
@@ -106,12 +135,8 @@ body {
     display: flex;
     gap: 2rem;
     list-style: none;
-    margin: 0;
+    margin: 0 auto;
     padding: 0;
-}
-/* .menu-list li {
-    display: flex;
-    align-items: center;
 }
 .menu-list a {
     text-transform: uppercase;
@@ -123,92 +148,21 @@ body {
     content: '';
     position: absolute;
     left: 0;
-    right: 0;
-    bottom: 0.15em;
-    height: 3px;
+    bottom: -4px;
+    height: 2px;
+    width: 0;
     background: var(--color-primary);
     border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+    transition: width 0.3s cubic-bezier(.4,0,.2,1);
     z-index: 2;
 }
 .menu-list a:hover::after,
 .menu-list a:focus-visible::after {
-    transform: scaleX(1);
-} */
-
-
-.skew-button {
-    float: left;
-    position: relative;
-    font-family: arial;
-    text-transform: uppercase;
-    color: var(--color-text);
-    cursor: pointer;
-}
-.skew-button .label {
-    font-size: 100%;
-    padding: 10px;
-    display: inline-block;
+    width: 100%;
 }
 
-.v7:hover .icon {
-  transform: scale(0.9) skew(-40deg, 0deg);
-}
-.v7:hover .icon:before, .v7:hover .icon:after {
-  width: 100%;
-}
-.v7:hover .icon span:before, .v7:hover .icon span:after {
-  height: 100%;
-}
-.v7 .label {
-  padding: 10px 22px;
-}
-.v7 .icon {
-  display: block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  transform: skew(-40deg, 0deg);
-  transition: all 0.5s;
-}
-.v7 .icon:before, .v7 .icon:after {
-  content: "";
-  height: 1px;
-  width: 30px;
-  position: absolute;
-  display: block;
-  background: var(--color-primary);
-  transition: width 0.5s;
-}
-.v7 .icon:before {
-  left: 0;
-  top: 0;
-}
-.v7 .icon:after {
-  right: 0;
-  bottom: 0;
-}
-.v7 .icon span:before, .v7 .icon span:after {
-  content: "";
-  background: var(--color-primary);
-  position: absolute;
-  display: block;
-  width: 2px;
-  height: 30px;
-  transition: height 0.5s;
-}
-.v7 .icon span:before {
-  left: 0;
-  top: 0;
-}
-.v7 .icon span:after {
-  right: 0;
-  bottom: 0;
-}
+
+/* removed old skew-button/v7 hover effect */
 
 
 .theme-toggle {
@@ -267,6 +221,7 @@ body {
     display: flex;
     align-items: center;
 }
+.menu-list .theme-switcher { display: none; }
 .theme-switcher-input {
     opacity: 0;
     width: 0;
@@ -278,34 +233,34 @@ body {
     align-items: center;
     justify-content: center;
     position: relative;
-    width: 80px;
-    height: 32px;
+    width: 54px;
+    height: 22px;
     background: var(--color-bg);
-    border: 2px solid var(--color-primary);
-    border-radius: 0;
+    --sw-b: 2px;
+    border: 0;
+    box-shadow: 0 0 0 var(--sw-b) var(--color-primary) inset;
+    border-radius: 9999px;
     cursor: pointer;
     transition: background 0.2s, border 0.2s;
     box-sizing: border-box;
     gap: 0;
     padding: 0;
-    /* Добавляем скос */
-    transform: skew(-40deg);
     overflow: hidden;
 }
 .theme-switcher-thumb {
     position: absolute;
-    left: 0;
-    width: 50%;
+    left: calc(0px - var(--sw-b) - 1px);
+    width: calc(50% + var(--sw-b) + 1px);
     height: 100%;
     background: var(--color-primary);
     transition: left 0.25s cubic-bezier(.4,0,.2,1), background 0.2s;
     z-index: 2;
-    border: 2px solid var(--color-primary);
-    border-radius: 0;
-    box-shadow: 0 2px 8px 0 color-mix(in srgb, var(--color-primary), transparent 80%);
+    border: 0;
+    border-radius: 9999px;
+    box-shadow: none;
 }
 .theme-switcher-input:checked + .theme-switcher-label .theme-switcher-thumb {
-    left: 50%;
+    left: calc(50% - var(--sw-b) - 1px);
 }
 .theme-switcher-label .switch-half {
     width: 50%;
@@ -316,8 +271,6 @@ body {
     position: relative;
     z-index: 3;
     pointer-events: none;
-    /* Возвращаем текст и иконки к обычному виду */
-    transform: skew(40deg);
 }
 .theme-switcher-label .switch-half.left {
     /* Левая половина для солнца */
@@ -338,6 +291,10 @@ body {
     position: static;
     opacity: 1;
 }
+.theme-switcher-label .switch-icon svg {
+    width: 16px;
+    height: 16px;
+}
 .theme-switcher-label .switch-half.left .switch-icon.sun,
 .theme-switcher-label .switch-half.right .switch-icon.moon {
     opacity: 1;
@@ -352,13 +309,53 @@ body {
 
 
 @media (max-width: 700px) {
-    .header-flex {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
+    .header-flex { gap: 1rem; }
+    .nav-toggle { display: inline-flex; }
     .menu-list {
-        gap: 1rem;
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 260px;
+        background: var(--color-bg);
+        border-left: 1px solid var(--color-secondary);
+        transform: translateX(100%);
+        transition: transform 0.25s cubic-bezier(.4,0,.2,1);
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+        gap: 0.5rem;
+        z-index: 1100;
+        overflow-y: auto;
+    }
+    .menu-list .theme-switcher {
+        display: flex;
+        margin-top: 8px;
+    }
+    /* hide header theme switcher on mobile (inside right block) */
+    .header-right .theme-switcher {
+        display: none;
+    }
+    .menu-list.is-open {
+        transform: translateX(0);
+        box-shadow: -8px 0 24px 0 color-mix(in srgb, var(--color-text), transparent 85%);
+    }
+    .menu-list .menu-link {
+        display: block;
+        padding: 10px 8px;
+    }
+    .nav-backdrop {
+        position: fixed;
+        inset: 0;
+        background: color-mix(in srgb, var(--color-text), transparent 80%);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.2s ease;
+        z-index: 1050;
+    }
+    .nav-backdrop.is-visible {
+        opacity: 1;
+        pointer-events: auto;
     }
     .theme-toggle {
         margin-left: 0;
@@ -382,6 +379,7 @@ body {
 .site-main {
     flex: 1 0 auto;
     padding: 10 0;
+    padding-top: var(--header-height, 0px);
 }
 
 .site-footer {

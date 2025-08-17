@@ -7,8 +7,9 @@ let SliderDom = carouselDom.querySelector('.carousel .list');
 
 let timeRunning = 3000;
 let timeAutoNext = 7000;
+let animationDurationMs = 800; // sync with CSS keyframe durations
 
-// Меняем местами функции кнопок
+// Swap button functions
 nextDom.onclick = function(){
     showSlider('prev');    
 }
@@ -29,11 +30,11 @@ function showSlider(type){
         SliderDom.prepend(SliderItemsDom[SliderItemsDom.length - 1]);
         carouselDom.classList.add('prev');
     }
-    // Оставляем класс .next/.prev на время анимации, но не блокируем кнопки
+    // Keep .next/.prev class during animation without blocking buttons
     setTimeout(() => {
         carouselDom.classList.remove('next');
         carouselDom.classList.remove('prev');
-    }, 500); // 500мс = длительность анимации появления картинки
+    }, animationDurationMs); // image animation duration must match CSS
 
     clearTimeout(runNextAuto);
     runNextAuto = setTimeout(() => {
@@ -41,7 +42,7 @@ function showSlider(type){
     }, timeAutoNext)
 }
 
-// Автоматическая адаптация высоты .carousel под высоту header
+// Auto-adjust .carousel height based on header height
 (function() {
     function setCarouselHeight() {
         var header = document.querySelector('.site-header');
@@ -53,3 +54,5 @@ function showSlider(type){
     window.addEventListener('resize', setCarouselHeight);
     window.addEventListener('DOMContentLoaded', setCarouselHeight);
 })();
+
+// swipe support removed per request

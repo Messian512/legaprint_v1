@@ -13,54 +13,53 @@
             <a href="index.html" class="logo-link">
                 <img src="assets/image/logo.svg" alt="Legaprint Logo" class="site-logo" height="40">
             </a>
-            <nav class="menu-list">
-                <!-- <ul class="menu-list">
-                    <li><a href="#">ГЛАВНАЯ<span class="icon"><span></span></span></a></li>
-                    <li><a href="#">ПРОДУКЦИЯ</a></li>
-                    <li><a href="#">О КОМПАНИИ</a></li>
-                    <li><a href="#">КОНТАКТЫ</a></li>
-                </ul> -->
-                <div class="skew-button v7">
-                    <a class="label" href="#">ГЛАВНАЯ</a>
-                    <span class="icon">
-                        <span></span>
-                    </span>
-                </div>
-                <div class="skew-button v7">
-                    <a class="label" href="#">ПРОДУКЦИЯ</a>
-                    <span class="icon">
-                        <span></span>
-                    </span>
-                </div>
-                <div class="skew-button v7">
-                    <a class="label" href="#">О КОМПАНИИ</a>
-                    <span class="icon">
-                        <span></span>
-                    </span>
-                </div>
-                <div class="skew-button v7">
-                    <a class="label" href="#">КОНТАКТЫ</a>
-                    <span class="icon">
-                        <span></span>
-                    </span>
+            <nav id="primary-nav" class="menu-list">
+                <a href="#" class="menu-link">ГЛАВНАЯ</a>
+                <a href="#" class="menu-link">ПРОДУКЦИЯ</a>
+                <a href="#" class="menu-link">О КОМПАНИИ</a>
+                <a href="#" class="menu-link">КОНТАКТЫ</a>
+                <div class="theme-switcher" title="Переключить тему">
+                    <input type="checkbox" id="theme-toggle" class="theme-switcher-input" />
+                    <label for="theme-toggle" class="theme-switcher-label">
+                        <span class="theme-switcher-thumb"></span>
+                        <span class="switch-half left">
+                            <span class="switch-icon moon" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                            </span>
+                        </span>
+                        <span class="switch-half right">
+                            <span class="switch-icon sun" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            </span>
+                        </span>
+                    </label>
                 </div>
             </nav>
-            <div class="theme-switcher" title="Переключить тему">
-                <input type="checkbox" id="theme-toggle" class="theme-switcher-input" />
-                <label for="theme-toggle" class="theme-switcher-label">
-                    <span class="theme-switcher-thumb"></span>
-                    <span class="switch-half left">
-                        <span class="switch-icon sun" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            <div class="nav-backdrop" hidden></div>
+            <div class="header-right">
+                <button class="nav-toggle" aria-controls="primary-nav" aria-expanded="false" aria-label="Открыть меню">
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                    <span class="nav-toggle-bar"></span>
+                </button>
+                <div class="theme-switcher" title="Переключить тему">
+                    <input type="checkbox" id="theme-toggle-desktop" class="theme-switcher-input" />
+                    <label for="theme-toggle-desktop" class="theme-switcher-label">
+                        <span class="theme-switcher-thumb"></span>
+                        <span class="switch-half left">
+                            <span class="switch-icon moon" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                            </span>
                         </span>
-                    </span>
-                    <span class="switch-half right">
-                        <span class="switch-icon moon" aria-hidden="true">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 12.79A9 9 0 1111.21 3a7 7 0 109.79 9.79z" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+                        <span class="switch-half right">
+                            <span class="switch-icon sun" aria-hidden="true">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" stroke="currentColor" stroke-width="2"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                            </span>
                         </span>
-                    </span>
-                </label>
+                    </label>
+                </div>
             </div>
+            
         </div>
     </header>
     <main class="site-main">
@@ -167,7 +166,7 @@
                 </div>
             </div>
         </div>
-        <!-- list thumnail -->
+        <!-- list thumbnail -->
         <!-- <div class="thumbnail">
             <div class="item">
                 <img src="assets/image/slider_01.png">
@@ -226,6 +225,8 @@
 
     <script src="js/carousel.js"></script>
     <!-- Основной контент -->
+
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
     </main>
     <footer class="site-footer">
         <div class="container">

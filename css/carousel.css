@@ -17,6 +17,7 @@
     object-fit: contain;
     object-position: right center;
     /* margin-left: auto; */
+    will-change: transform;
 }
 .carousel .list .item .content{
     position: absolute;
@@ -68,7 +69,7 @@
     border: 1px solid #fff;
     color: #eee;
 }
-/* thumbail */
+/* thumbnail */
 /* .thumbnail{
     position: absolute;
     bottom: 50px;
@@ -171,29 +172,43 @@
 }
 /* create animation when next click */
 .carousel.next .list .item:nth-child(1) img{
-    width: 150px;
-    height: 220px;
     position: absolute;
-    bottom: 0;
-    right: 0;
-    border-radius: 30px;
-    animation: showImageFromRight 0.5s linear 1 forwards;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: slideInFromRight 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 1 forwards;
 }
-@keyframes showImageFromRight{
+@keyframes slideInFromRight{
     from{
-        width: 0;
-        height: 0;
-        bottom: 0;
-        right: 0;
-        border-radius: 30px;
-        opacity: 0.7;
+        transform: translateX(100%);
+        opacity: 1;
     }
     to{
-        width: 100%;
-        height: 100%;
-        bottom: 0;
-        right: 0;
-        border-radius: 0;
+        transform: translateX(0%);
+        opacity: 1;
+    }
+}
+
+/* outgoing slide for next: old first (now last) moves left */
+.carousel.next .list .item:nth-last-child(1){
+    z-index: 2;
+}
+.carousel.next .list .item:nth-last-child(1) img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: slideOutToLeft 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 1 forwards;
+}
+@keyframes slideOutToLeft{
+    from{
+        transform: translateX(0%);
+        opacity: 1;
+    }
+    to{
+        transform: translateX(-100%);
         opacity: 1;
     }
 }
@@ -244,19 +259,41 @@
 }
 
 .carousel.prev .list .item:nth-child(2) img{
-    animation: outFrameToRight 0.5s linear 1 forwards;
     position: absolute;
-    bottom: 0;
-    right: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: slideOutToRight 0.8s cubic-bezier(0.4, 0.0, 0.2, 1) 1 forwards;
 }
-@keyframes outFrameToRight{
+@keyframes slideOutToRight{
+    from{
+        transform: translateX(0%);
+        opacity: 1;
+    }
     to{
-        width: 0;
-        height: 0;
-        bottom: 0;
-        right: 0;
-        border-radius: 20px;
-        opacity: 0.7;
+        transform: translateX(100%);
+        opacity: 1;
+    }
+}
+
+/* incoming slide for prev from left */
+.carousel.prev .list .item:nth-child(1) img{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    animation: slideInFromLeft 0.8s cubic-bezier(0.22, 0.61, 0.36, 1) 1 forwards;
+}
+@keyframes slideInFromLeft{
+    from{
+        transform: translateX(-100%);
+        opacity: 1;
+    }
+    to{
+        transform: translateX(0%);
+        opacity: 1;
     }
 }
 
@@ -291,5 +328,8 @@
     }
     .carousel .list .item .content .title{
         font-size: 30px;
+    }
+    .carousel .list .item img{
+        object-position: center bottom;
     }
 }

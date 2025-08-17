@@ -1,4 +1,4 @@
-// Лёгкий vanilla JS для слайдера
+// Lightweight vanilla JS slider
 (function() {
     const slides = document.querySelectorAll('.slider-slide');
     const dots = document.querySelectorAll('.slider-dot');
