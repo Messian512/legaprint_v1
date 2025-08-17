@@ -561,3 +561,48 @@ body.nav-open { overflow: hidden; touch-action: none; }
 @media (max-width: 1024px) {
 	.about-grid { grid-template-columns: 1fr; }
 }
+
+/* Customers section */
+.customers { padding: 3rem 0; }
+.customers-heading { margin: 0 0 1.25rem 0; display: flex; align-items: center; gap: 10px; }
+.customers-heading-icon {
+	width: 20px;
+	height: 20px;
+	display: inline-block;
+	background-color: var(--color-accent);
+	-webkit-mask: url('../assets/image/icon_paragraph.svg') no-repeat center / contain;
+	mask: url('../assets/image/icon_paragraph.svg') no-repeat center / contain;
+}
+.customers-heading-text { font-size: clamp(1.1rem, 3vw, 1.6rem); font-weight: 800; letter-spacing: .04em; }
+.customers-marquee {
+	overflow: hidden;
+	width: 100%;
+	position: relative;
+	padding: 0.5rem 0;
+	background: var(--color-bg);
+}
+.customers-track {
+	display: flex;
+	will-change: transform;
+	animation: marquee-scroll 25s linear infinite;
+}
+.customers-seq { display: flex; gap: 24px; }
+.customer-logo-wrap { width: 227px; flex: 0 0 227px; display: flex; align-items: center; justify-content: center; }
+.customer-logo {
+	height: 112px;
+	width: auto;
+	object-fit: contain;
+	filter: none;
+	display: block;
+}
+@keyframes marquee-scroll {
+	from { transform: translate3d(0, 0, 0); }
+	to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (max-width: 1024px) {
+	.customer-logo { height: 56px; }
+}
+@media (max-width: 600px) {
+	.customer-logo { height: 48px; }
+}
