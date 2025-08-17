@@ -10,16 +10,20 @@ let timeAutoNext = 7000;
 let animationDurationMs = 800; // sync with CSS keyframe durations
 
 // Swap button functions
-nextDom.onclick = function(){
-    showSlider('prev');    
+if (nextDom) {
+    nextDom.onclick = function(){
+        showSlider('prev');    
+    }
 }
 
-prevDom.onclick = function(){
-    showSlider('next');    
+if (prevDom) {
+    prevDom.onclick = function(){
+        showSlider('next');    
+    }
 }
 let runTimeOut;
 let runNextAuto = setTimeout(() => {
-    nextDom.click();
+    showSlider('next');
 }, timeAutoNext)
 function showSlider(type){
     let  SliderItemsDom = SliderDom.querySelectorAll('.carousel .list .item');
@@ -38,7 +42,7 @@ function showSlider(type){
 
     clearTimeout(runNextAuto);
     runNextAuto = setTimeout(() => {
-        nextDom.click();
+        showSlider('next');
     }, timeAutoNext)
 }
 
@@ -55,4 +59,52 @@ function showSlider(type){
     window.addEventListener('DOMContentLoaded', setCarouselHeight);
 })();
 
-// swipe support removed per request
+// Swipe support (mobile and desktop) using Pointer Events
+(function(){
+    if (!carouselDom) return;
+    let startX = null;
+    let isPointerDown = false;
+    const swipeThreshold = 40; // px
+
+    function onPointerDown(e){
+        isPointerDown = true;
+        startX = e.clientX;
+        if (e.pointerId && carouselDom.setPointerCapture) {
+            try { carouselDom.setPointerCapture(e.pointerId); } catch (err) {}
+        }
+        clearTimeout(runNextAuto);
+    }
+
+    function onPointerUp(e){
+        if (!isPointerDown) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > swipeThreshold){
+            if (dx < 0){
+                showSlider('next');
+            } else {
+                showSlider('prev');
+            }
+        } else {
+            clearTimeout(runNextAuto);
+            runNextAuto = setTimeout(() => { showSlider('next'); }, timeAutoNext);
+        }
+        isPointerDown = false;
+        startX = null;
+        if (e.pointerId && carouselDom.releasePointerCapture) {
+            try { carouselDom.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
+    }
+
+    function onPointerCancel(e){
+        isPointerDown = false;
+        startX = null;
+        if (e.pointerId && carouselDom.releasePointerCapture) {
+            try { carouselDom.releasePointerCapture(e.pointerId); } catch (err) {}
+        }
+    }
+
+    carouselDom.addEventListener('pointerdown', onPointerDown, { passive: true });
+    carouselDom.addEventListener('pointerup', onPointerUp, { passive: true });
+    carouselDom.addEventListener('pointercancel', onPointerCancel, { passive: true });
+    carouselDom.addEventListener('pointerleave', onPointerCancel, { passive: true });
+})();

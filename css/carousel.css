@@ -315,6 +315,16 @@
     animation: contentOut 1.5s linear 1 forwards!important;
 }
 
+/* ensure outgoing text animation also when moving to next (left swipe) */
+.carousel.next .list .item:nth-last-child(1) .content .author,
+.carousel.next .list .item:nth-last-child(1) .content .title,
+.carousel.next .list .item:nth-last-child(1) .content .topic,
+.carousel.next .list .item:nth-last-child(1) .content .des,
+.carousel.next .list .item:nth-last-child(1) .content .buttons
+{
+    animation: contentOut 1.5s linear 1 forwards!important;
+}
+
 @keyframes contentOut{
     to{
         transform: translateY(-150px);
