@@ -603,9 +603,13 @@ body.nav-open { overflow: hidden; touch-action: none; }
 
 @media (max-width: 1024px) {
 	.customer-logo { height: 56px; }
+	.customers-seq { gap: 16px; }
+	.customer-logo-wrap { width: 190px; flex: 0 0 190px; }
 }
 @media (max-width: 600px) {
 	.customer-logo { height: 48px; }
+	.customers-seq { gap: 12px; }
+	.customer-logo-wrap { width: 150px; flex: 0 0 150px; }
 }
 
 /* Map section */

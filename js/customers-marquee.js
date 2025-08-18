@@ -12,88 +12,114 @@
         track.style.willChange = 'transform';
         track.style.display = 'flex';
 
-        // Collect gap from existing sequence wrapper if present
-        const seq = track.querySelector('.customers-seq');
-        let gapPx = 24;
-        if (seq) {
-            const cs = window.getComputedStyle(seq);
-            const gap = cs.gap || cs.columnGap || cs.rowGap;
-            if (gap && /px$/.test(gap)) {
-                gapPx = parseFloat(gap);
-            }
-        }
+        // Fixed spacing independent of CSS/media queries and flex-gap support
+        const GAP_PX = 16;
+        const gapPx = GAP_PX;
 
         // Flatten: move logo items out of .customers-seq wrappers into the track directly
         const wrappers = Array.from(track.querySelectorAll('.customers-seq'));
         if (wrappers.length) {
             const items = [];
-            wrappers.forEach(w => {
-                items.push(...Array.from(w.children));
-            });
+            wrappers.forEach(w => { items.push(...Array.from(w.children)); });
             track.innerHTML = '';
             items.forEach(it => track.appendChild(it));
         }
 
-        // Ensure consistent spacing using flex gap on track
-        track.style.gap = gapPx + 'px';
+        // Disable flex gap; use explicit margins for consistent spacing across browsers
+        track.style.gap = '0px';
 
-        // Ensure each logo wrapper is not flexible
-        Array.from(track.children).forEach(child => {
-            child.style.flex = '0 0 auto';
-        });
-
-        // Duplicate children until content width >= 2x container width for smooth loop
-        const containerWidth = marquee.clientWidth;
-        function measureContentWidth(){
-            return track.scrollWidth;
-        }
-        const originals = Array.from(track.children);
-        let contentWidth = measureContentWidth();
-        // Safety: if no items, abort
-        if (!originals.length) return;
-        while (contentWidth < containerWidth * 2 + 227) {
-            originals.forEach(node => track.appendChild(node.cloneNode(true)));
-            contentWidth = measureContentWidth();
+        function setFixedMargins(){
+            Array.from(track.children).forEach(child => {
+                child.style.flex = '0 0 auto';
+                child.style.marginRight = gapPx + 'px';
+            });
         }
 
-        // Scroll logic
-        let offsetX = 0;
-        const pixelsPerSecond = 40; // adjust for desired speed
-        let lastTs = performance.now();
+        function recalcWrapperWidths(){
+            Array.from(track.children).forEach(child => {
+                const img = child.querySelector('img');
+                if (!img) return;
+                const rect = img.getBoundingClientRect();
+                const width = Math.max(1, Math.round(rect.width));
+                child.style.width = width + 'px';
+                child.style.flex = '0 0 ' + width + 'px';
+            });
+            setFixedMargins();
+        }
 
-        function step(ts){
-            const dt = (ts - lastTs) / 1000;
-            lastTs = ts;
-            offsetX -= pixelsPerSecond * dt;
+        function whenImagesReady(callback){
+            const imgs = Array.from(track.querySelectorAll('img'));
+            let remaining = imgs.length;
+            if (remaining === 0) return callback();
+            let done = false;
+            function one(){ if (done) return; remaining -= 1; if (remaining <= 0) { done = true; callback(); } }
+            imgs.forEach(img => {
+                if (img.complete && img.naturalWidth) { one(); }
+                else { img.addEventListener('load', one, { once: true }); img.addEventListener('error', one, { once: true }); }
+            });
+        }
 
-            // When the first item fully moved out (including gap), move it to the end and adjust offset
-            let first = track.firstElementChild;
-            if (first){
-                // Use bounding box to include any borders/padding
-                let firstWidth = first.getBoundingClientRect().width;
-                const shiftThreshold = firstWidth + gapPx;
-                // Move multiple items if needed (on slow machines / tab switch)
-                while (offsetX <= -shiftThreshold) {
-                    track.appendChild(first);
-                    offsetX += shiftThreshold;
-                    first = track.firstElementChild;
-                    if (!first) break;
-                    firstWidth = first.getBoundingClientRect().width;
+        function duplicateUntilWideEnough(){
+            const containerWidth = marquee.clientWidth;
+            const originals = Array.from(track.children);
+            if (!originals.length) return;
+            let contentWidth = track.scrollWidth;
+            while (contentWidth < containerWidth * 2 + 50) {
+                originals.forEach(node => track.appendChild(node.cloneNode(true)));
+                contentWidth = track.scrollWidth;
+            }
+        }
+
+        function startScroll(){
+            let offsetX = 0;
+            const pixelsPerSecond = 40; // adjust for desired speed
+            let lastTs = performance.now();
+
+            function step(ts){
+                const dt = (ts - lastTs) / 1000;
+                lastTs = ts;
+                offsetX -= pixelsPerSecond * dt;
+
+                let first = track.firstElementChild;
+                if (first){
+                    let firstWidth = first.getBoundingClientRect().width;
+                    const shiftThreshold = firstWidth + gapPx;
+                    while (offsetX <= -shiftThreshold) {
+                        track.appendChild(first);
+                        offsetX += shiftThreshold;
+                        first = track.firstElementChild;
+                        if (!first) break;
+                        firstWidth = first.getBoundingClientRect().width;
+                    }
                 }
+
+                track.style.transform = 'translate3d(' + offsetX + 'px, 0, 0)';
+                requestAnimationFrame(step);
             }
 
-            track.style.transform = 'translate3d(' + offsetX + 'px, 0, 0)';
             requestAnimationFrame(step);
         }
 
-        requestAnimationFrame(step);
+        function setup(){
+            recalcWrapperWidths();
+            duplicateUntilWideEnough();
+            startScroll();
+        }
 
-        // Pause on hover for better UX
-        let paused = false;
-        marquee.addEventListener('mouseenter', () => { paused = true; });
-        marquee.addEventListener('mouseleave', () => { paused = false; lastTs = performance.now(); });
-        // If paused, freeze offset but continue RAF to keep timing consistent
-        const origStep = step;
+        whenImagesReady(() => {
+            // recalc twice to ensure layout settled on mobiles
+            recalcWrapperWidths();
+            requestAnimationFrame(() => {
+                recalcWrapperWidths();
+                duplicateUntilWideEnough();
+                startScroll();
+            });
+        });
+
+        window.addEventListener('resize', () => {
+            // Recalculate widths on resize to keep spacing consistent
+            recalcWrapperWidths();
+        });
     }
 
     if (document.readyState === 'loading'){
