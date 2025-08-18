@@ -8,16 +8,17 @@
     <link rel="stylesheet" href="css/carousel.css">
 </head>
 <body>
+    <div id="top" aria-hidden="true"></div>
     <header class="site-header">
         <div class="container header-flex">
             <a href="index.html" class="logo-link">
                 <img src="assets/image/logo.svg" alt="Legaprint Logo" class="site-logo" height="40">
             </a>
             <nav id="primary-nav" class="menu-list">
-                <a href="index.html" class="menu-link">ГЛАВНАЯ</a>
-                <a href="#" class="menu-link">ПРОДУКЦИЯ</a>
-                <a href="#" class="menu-link">О КОМПАНИИ</a>
-                <a href="#" class="menu-link">КОНТАКТЫ</a>
+                <a href="#top" class="menu-link">В НАЧАЛО</a>
+                <a href="#products" class="menu-link">ПРОДУКЦИЯ</a>
+                <a href="#about" class="menu-link">О КОМПАНИИ</a>
+                <a href="#contacts" class="menu-link">КОНТАКТЫ</a>
                 <div class="theme-switcher" title="Переключить тему">
                     <input type="checkbox" id="theme-toggle" class="theme-switcher-input" />
                     <label for="theme-toggle" class="theme-switcher-label">
@@ -120,6 +121,18 @@
         </div>
     </div>
 
+    <section class="products" id="products">
+        <div class="container">
+            <h2 class="products-heading">
+                <span class="products-heading-icon" aria-hidden="true"></span>
+                <span class="products-heading-text">ПРОДУКЦИЯ</span>
+            </h2>
+            <div class="products-media">
+                <img src="assets/image/draenei_poster_001.png" alt="Продукция">
+            </div>
+        </div>
+    </section>
+    
     <section class="trust">
         <div class="trust-strip">
             <div class="container trust-strip-content">
@@ -217,7 +230,7 @@
         </div>
     </section>
     
-    <section class="about">
+    <section class="about" id="about">
         <div class="container">
             <h2 class="about-heading">
                 <span class="about-heading-icon" aria-hidden="true"></span>
@@ -235,19 +248,7 @@
             </div>
         </div>
     </section>
-    
-    <section class="map">
-        <div class="container">
-            <h2 class="map-heading">
-                <span class="map-heading-icon" aria-hidden="true"></span>
-                <span class="map-heading-text">КАРТА</span>
-            </h2>
-            <div class="map-frame">
-                <iframe src="https://yandex.com/map-widget/v1/?um=constructor:7bf15595f82fa770d31e74c4afd27a527907df99c48d07806811e110ce8f3112&source=constructor" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            </div>
-        </div>
-    </section>
-    
+
     <section class="customers">
         <div class="container">
             <h2 class="customers-heading">
@@ -270,18 +271,29 @@
             </div>
         </div>
     </section>
+
+    <section class="map">
+        <div class="container">
+            <h2 class="map-heading">
+                <span class="map-heading-icon" aria-hidden="true"></span>
+                <span class="map-heading-text">КАРТА</span>
+            </h2>
+            <div class="map-frame">
+                <iframe src="https://yandex.com/map-widget/v1/?um=constructor:7bf15595f82fa770d31e74c4afd27a527907df99c48d07806811e110ce8f3112&source=constructor" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </div>
+    </section>    
     
     <script src="js/carousel.js"></script>
     <script src="js/customers-marquee.js"></script>
-    <!-- Основной контент -->
 
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, quos.</p>
     </main>
-    <footer class="site-footer">
+    <footer class="site-footer" id="contacts">
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-col">
-                    <h3 class="footer-title">КОНТАКТЫ:</h3>
+                    <h3 class="footer-title">КОНТАКТЫ</h3>
                     <ul class="contact-list">
                         <li class="contact-item">
                             <span class="contact-icon icon-location" aria-hidden="true"></span>
@@ -298,7 +310,7 @@
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h3 class="footer-title">ВРЕМЯ РАБОТЫ:</h3>
+                    <h3 class="footer-title">ВРЕМЯ РАБОТЫ</h3>
                     <ul class="contact-list">
                         <li class="contact-item"><span>Пн-Пт: 08:00–17:00</span></li>
                         <li class="contact-item"><span>Сб, Вс: выходной</span></li>
