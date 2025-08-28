@@ -57,7 +57,7 @@
         // Close sidebar when clicking any nav link (except theme switcher)
         primaryNav.addEventListener('click', (e) => {
             if (!primaryNav.classList.contains('is-open')) return;
-            const link = e.target && e.target.closest ? e.target.closest('a.menu-link') : null;
+            const link = e.target && e.target.closest ? e.target.closest('a.menu-link, a.submenu-link') : null;
             if (!link) return;
             if (link.closest('.theme-switcher')) return;
             setNavOpen(false);
@@ -92,4 +92,37 @@
         primaryNav.addEventListener('pointercancel', endSwipe, { passive: true });
         primaryNav.addEventListener('pointerleave', endSwipe, { passive: true });
     }
+
+    // Dropdown: PRODUCTS
+    (function(){
+        const btn = document.querySelector('.menu-link-btn[aria-controls="submenu-products"]');
+        const submenu = document.getElementById('submenu-products');
+        if (!btn || !submenu) return;
+
+        function toggleSubmenu(force){
+            const willOpen = typeof force === 'boolean' ? force : !submenu.classList.contains('is-open');
+            submenu.classList.toggle('is-open', willOpen);
+            btn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        }
+
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleSubmenu();
+        });
+
+        // Close on outside click (desktop)
+        document.addEventListener('click', (e) => {
+            if (!submenu.classList.contains('is-open')) return;
+            const target = e.target;
+            if (target.closest('.menu-item')) return;
+            toggleSubmenu(false);
+        });
+
+        // Close submenu after clicking a submenu link (also closes sidebar via existing handler)
+        submenu.addEventListener('click', (e) => {
+            const link = e.target && e.target.closest ? e.target.closest('a.submenu-link') : null;
+            if (!link) return;
+            toggleSubmenu(false);
+        });
+    })();
 })();
