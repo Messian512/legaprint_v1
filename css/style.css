@@ -562,6 +562,10 @@ body.nav-open { overflow: hidden; touch-action: none; }
 	align-items: start;
 }
 .about-media img { width: 100%; height: auto; display: block; border-radius: 16px; box-shadow: 0 10px 24px 0 color-mix(in srgb, var(--color-text), transparent 90%); }
+.about-slideshow { position: relative; }
+.about-slideshow img { width: 100%; height: auto; display: block; border-radius: 16px; }
+.about-slideshow .about-overlay { position: absolute; inset: 0; opacity: 0; transition: opacity 2s ease; }
+.about-slideshow.is-fading .about-overlay { opacity: 1; }
 .about-content { color: var(--color-text); }
 .about-content p { margin: 0 0 0.8rem 0; line-height: 1.7; }
 

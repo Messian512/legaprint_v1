@@ -364,3 +364,4 @@
 
     selectType(currentType);
 })();
+
