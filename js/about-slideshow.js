@@ -52,7 +52,7 @@
             }, 2000);
         }
 
-        setInterval(next, 7000);
+        setInterval(next, 5000);
     })();
 })();
 
