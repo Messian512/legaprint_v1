@@ -16,6 +16,16 @@
         return `assets/image/products/product_typeA_${type}.jpg`;
     }
 
+    const preloaded = new Map();
+    function preloadType(t){
+        if (preloaded.has(t)) return;
+        const img = new Image();
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.src = getTypeSrc(t);
+        preloaded.set(t, img);
+    }
+
     function clearTrack(){
         if (!track) return;
         track.innerHTML = '';
@@ -26,19 +36,24 @@
     function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (s) => {
+        const makeImg = (s, isFirst) => {
             const img = document.createElement('img');
             img.className = 'products-a-slide';
             img.src = s;
             img.alt = '';
             img.decoding = 'async';
-            img.loading = 'lazy';
+            if (isFirst) {
+                img.loading = 'eager';
+                img.fetchPriority = 'high';
+            } else {
+                img.loading = 'lazy';
+            }
             return img;
         };
-        // Duplicate the single image a few times to enable seamless loop
-        for (let i = 0; i < 3; i++){
-            fragment.appendChild(makeImg(src));
-        }
+        // First image eager + two lazy copies for seamless loop
+        fragment.appendChild(makeImg(src, true));
+        fragment.appendChild(makeImg(src, false));
+        fragment.appendChild(makeImg(src, false));
         track.appendChild(fragment);
     }
 
@@ -86,6 +101,7 @@
         stopAnimation();
         clearTrack();
         const src = getTypeSrc(type);
+        preloadType(type);
         fillTrackSingle(src);
         startAnimation();
     }
@@ -99,6 +115,9 @@
     });
 
     // init
+    // Preload all types visible in UI
+    const availableTypes = Array.from(new Set(buttons.map(b => Number(b.dataset.type)).filter(Boolean)));
+    availableTypes.forEach(preloadType);
     selectType(currentType);
 })();
 
@@ -121,6 +140,16 @@
         return `assets/image/products/product_typeB_${type}.jpg`;
     }
 
+    const preloaded = new Map();
+    function preloadType(t){
+        if (preloaded.has(t)) return;
+        const img = new Image();
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.src = getTypeSrc(t);
+        preloaded.set(t, img);
+    }
+
     function clearTrack(){
         if (!track) return;
         track.innerHTML = '';
@@ -131,18 +160,23 @@
     function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (s) => {
+        const makeImg = (s, isFirst) => {
             const img = document.createElement('img');
             img.className = 'products-b-slide';
             img.src = s;
             img.alt = '';
             img.decoding = 'async';
-            img.loading = 'lazy';
+            if (isFirst) {
+                img.loading = 'eager';
+                img.fetchPriority = 'high';
+            } else {
+                img.loading = 'lazy';
+            }
             return img;
         };
-        for (let i = 0; i < 3; i++){
-            fragment.appendChild(makeImg(src));
-        }
+        fragment.appendChild(makeImg(src, true));
+        fragment.appendChild(makeImg(src, false));
+        fragment.appendChild(makeImg(src, false));
         track.appendChild(fragment);
     }
 
@@ -189,6 +223,7 @@
         stopAnimation();
         clearTrack();
         const src = getTypeSrc(type);
+        preloadType(type);
         fillTrackSingle(src);
         startAnimation();
     }
@@ -201,6 +236,8 @@
         });
     });
 
+    const availableTypes = Array.from(new Set(buttons.map(b => Number(b.dataset.type)).filter(Boolean)));
+    availableTypes.forEach(preloadType);
     selectType(currentType);
 })();
 
@@ -222,6 +259,16 @@
         return `assets/image/products/product_typeC_${type}.jpg`;
     }
 
+    const preloaded = new Map();
+    function preloadType(t){
+        if (preloaded.has(t)) return;
+        const img = new Image();
+        img.decoding = 'async';
+        img.loading = 'eager';
+        img.src = getTypeSrc(t);
+        preloaded.set(t, img);
+    }
+
     function clearTrack(){
         if (!track) return;
         track.innerHTML = '';
@@ -232,18 +279,23 @@
     function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (s) => {
+        const makeImg = (s, isFirst) => {
             const img = document.createElement('img');
             img.className = 'products-c-slide';
             img.src = s;
             img.alt = '';
             img.decoding = 'async';
-            img.loading = 'lazy';
+            if (isFirst) {
+                img.loading = 'eager';
+                img.fetchPriority = 'high';
+            } else {
+                img.loading = 'lazy';
+            }
             return img;
         };
-        for (let i = 0; i < 3; i++){
-            fragment.appendChild(makeImg(src));
-        }
+        fragment.appendChild(makeImg(src, true));
+        fragment.appendChild(makeImg(src, false));
+        fragment.appendChild(makeImg(src, false));
         track.appendChild(fragment);
     }
 
@@ -290,6 +342,7 @@
         stopAnimation();
         clearTrack();
         const src = getTypeSrc(type);
+        preloadType(type);
         fillTrackSingle(src);
         startAnimation();
     }
@@ -302,6 +355,8 @@
         });
     });
 
+    const availableTypes = Array.from(new Set(buttons.map(b => Number(b.dataset.type)).filter(Boolean)));
+    availableTypes.forEach(preloadType);
     selectType(currentType);
 })();
 
