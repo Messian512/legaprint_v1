@@ -12,29 +12,8 @@
     let positionX = 0;
     let speed = 0.25; // px per frame
 
-    function buildImagePath(type, index){
-        return `assets/image/products/product_typeA_${type}_${index}.jpg`;
-    }
-
-    function preload(src){
-        return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = src;
-        });
-    }
-
-    async function gatherImages(type){
-        const urls = [];
-        for (let i = 1; i <= 20; i++){
-            const src = buildImagePath(type, i);
-            // eslint-disable-next-line no-await-in-loop
-            const ok = await preload(src);
-            if (!ok) continue;
-            urls.push(src);
-        }
-        return urls;
+    function getTypeSrc(type){
+        return `assets/image/products/product_typeA_${type}.jpg`;
     }
 
     function clearTrack(){
@@ -44,20 +23,22 @@
         track.style.transform = 'translateX(0)';
     }
 
-    function fillTrack(urls){
+    function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (src) => {
+        const makeImg = (s) => {
             const img = document.createElement('img');
             img.className = 'products-a-slide';
-            img.src = src;
+            img.src = s;
             img.alt = '';
             img.decoding = 'async';
             img.loading = 'lazy';
             return img;
         };
-        // Add two sequences for seamless loop
-        [urls, urls].forEach(seq => seq.forEach(src => fragment.appendChild(makeImg(src))));
+        // Duplicate the single image a few times to enable seamless loop
+        for (let i = 0; i < 3; i++){
+            fragment.appendChild(makeImg(src));
+        }
         track.appendChild(fragment);
     }
 
@@ -104,9 +85,8 @@
         updateDesc(type);
         stopAnimation();
         clearTrack();
-        const urls = await gatherImages(type);
-        if (!urls.length) return;
-        fillTrack(urls);
+        const src = getTypeSrc(type);
+        fillTrackSingle(src);
         startAnimation();
     }
 
@@ -137,29 +117,8 @@
     let positionX = 0;
     let speed = 0.25;
 
-    function buildImagePath(type, index){
-        return `assets/image/products/product_typeB_${type}_${index}.jpg`;
-    }
-
-    function preload(src){
-        return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = src;
-        });
-    }
-
-    async function gatherImages(type){
-        const urls = [];
-        for (let i = 1; i <= 20; i++){
-            const src = buildImagePath(type, i);
-            // eslint-disable-next-line no-await-in-loop
-            const ok = await preload(src);
-            if (!ok) continue;
-            urls.push(src);
-        }
-        return urls;
+    function getTypeSrc(type){
+        return `assets/image/products/product_typeB_${type}.jpg`;
     }
 
     function clearTrack(){
@@ -169,19 +128,21 @@
         track.style.transform = 'translateX(0)';
     }
 
-    function fillTrack(urls){
+    function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (src) => {
+        const makeImg = (s) => {
             const img = document.createElement('img');
             img.className = 'products-b-slide';
-            img.src = src;
+            img.src = s;
             img.alt = '';
             img.decoding = 'async';
             img.loading = 'lazy';
             return img;
         };
-        [urls, urls].forEach(seq => seq.forEach(src => fragment.appendChild(makeImg(src))));
+        for (let i = 0; i < 3; i++){
+            fragment.appendChild(makeImg(src));
+        }
         track.appendChild(fragment);
     }
 
@@ -227,9 +188,8 @@
         updateDesc(type);
         stopAnimation();
         clearTrack();
-        const urls = await gatherImages(type);
-        if (!urls.length) return;
-        fillTrack(urls);
+        const src = getTypeSrc(type);
+        fillTrackSingle(src);
         startAnimation();
     }
 
@@ -258,29 +218,8 @@
     let positionX = 0;
     let speed = 0.25;
 
-    function buildImagePath(type, index){
-        return `assets/image/products/product_typeC_${type}_${index}.jpg`;
-    }
-
-    function preload(src){
-        return new Promise(resolve => {
-            const img = new Image();
-            img.onload = () => resolve(true);
-            img.onerror = () => resolve(false);
-            img.src = src;
-        });
-    }
-
-    async function gatherImages(type){
-        const urls = [];
-        for (let i = 1; i <= 20; i++){
-            const src = buildImagePath(type, i);
-            // eslint-disable-next-line no-await-in-loop
-            const ok = await preload(src);
-            if (!ok) continue;
-            urls.push(src);
-        }
-        return urls;
+    function getTypeSrc(type){
+        return `assets/image/products/product_typeC_${type}.jpg`;
     }
 
     function clearTrack(){
@@ -290,19 +229,21 @@
         track.style.transform = 'translateX(0)';
     }
 
-    function fillTrack(urls){
+    function fillTrackSingle(src){
         if (!track) return;
         const fragment = document.createDocumentFragment();
-        const makeImg = (src) => {
+        const makeImg = (s) => {
             const img = document.createElement('img');
             img.className = 'products-c-slide';
-            img.src = src;
+            img.src = s;
             img.alt = '';
             img.decoding = 'async';
             img.loading = 'lazy';
             return img;
         };
-        [urls, urls].forEach(seq => seq.forEach(src => fragment.appendChild(makeImg(src))));
+        for (let i = 0; i < 3; i++){
+            fragment.appendChild(makeImg(src));
+        }
         track.appendChild(fragment);
     }
 
@@ -348,9 +289,8 @@
         updateDesc(type);
         stopAnimation();
         clearTrack();
-        const urls = await gatherImages(type);
-        if (!urls.length) return;
-        fillTrack(urls);
+        const src = getTypeSrc(type);
+        fillTrackSingle(src);
         startAnimation();
     }
 
