@@ -5,13 +5,18 @@
     const overlay = wrap.querySelector('.about-overlay');
     if (!base || !overlay) return;
 
-    function buildCandidates(){
-        const candidates = [];
-        for (let i = 1; i <= 99; i++){
-            const num = String(i).padStart(2, '0');
-            candidates.push(`assets/image/about_company_${num}.jpg`);
+    async function loadImagesFromManifest(){
+        try {
+            const response = await fetch('assets/image/about_company_manifest.json', { cache: 'no-cache' });
+            if (!response.ok) throw new Error('manifest fetch failed');
+            const manifest = await response.json();
+            if (!Array.isArray(manifest)) return [];
+            const candidates = manifest.filter(item => typeof item === 'string' && item.trim().length > 0);
+            const results = await Promise.all(candidates.map(src => preload(src).then(ok => (ok ? src : null))));
+            return results.filter(Boolean);
+        } catch (err) {
+            return [];
         }
-        return candidates;
     }
 
     function preload(src){
@@ -23,19 +28,10 @@
         });
     }
 
-    async function collectExisting(){
-        const found = [];
-        const list = buildCandidates();
-        for (const src of list){
-            // eslint-disable-next-line no-await-in-loop
-            const ok = await preload(src);
-            if (ok) found.push(src);
-        }
-        return found;
-    }
+    // images are listed explicitly in the manifest; no guessing of filenames
 
     (async function init(){
-        const images = await collectExisting();
+        const images = await loadImagesFromManifest();
         if (!images.length) return;
         let idx = 0;
         base.src = images[0];
