@@ -180,6 +180,25 @@ body.nav-open { overflow: hidden; touch-action: none; }
 /* press effect for nav links (desktop and mobile) */
 .menu-list a:active { color: var(--color-primary); }
 
+/* Hover underline effect for PRODUCTS button in main nav (match links) */
+.menu-list .menu-link-btn { position: relative; }
+.menu-list .menu-link-btn::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    height: 2px;
+    width: 0;
+    background: var(--color-primary);
+    border-radius: 2px;
+    transition: width 0.3s cubic-bezier(.4,0,.2,1);
+    z-index: 2;
+}
+.menu-list .menu-link-btn:hover::after,
+.menu-list .menu-link-btn:focus-visible::after {
+    width: 100%;
+}
+
 
 /* removed old skew-button/v7 hover effect */
 
@@ -373,6 +392,7 @@ body.nav-open { overflow: hidden; touch-action: none; }
     }
     /* remove hover underline inside burger menu */
     .menu-list .menu-link::after { display: none; }
+    .menu-list .menu-link-btn::after { display: none; }
     /* prevent mobile tap background highlight on links */
     .menu-list .menu-link { -webkit-tap-highlight-color: transparent; }
     .menu-list .menu-link:active {
