@@ -13,7 +13,7 @@
     let speed = 0.25; // px per frame
 
     function getTypeSrc(type){
-        return `assets/image/products/product_typeA_${type}.jpg`;
+        return `assets/image/products/product_typeA_${type}.webp`;
     }
 
     const preloaded = new Map();
@@ -137,7 +137,7 @@
     let speed = 0.25;
 
     function getTypeSrc(type){
-        return `assets/image/products/product_typeB_${type}.jpg`;
+        return `assets/image/products/product_typeB_${type}.webp`;
     }
 
     const preloaded = new Map();
@@ -256,7 +256,7 @@
     let speed = 0.25;
 
     function getTypeSrc(type){
-        return `assets/image/products/product_typeC_${type}.jpg`;
+        return `assets/image/products/product_typeC_${type}.webp`;
     }
 
     const preloaded = new Map();
